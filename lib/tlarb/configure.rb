@@ -4,6 +4,7 @@
 module Tlarb
 	module Configure
 		CONFIG = [
+			:environment, 
 			:access_token, 
 			:time_zone, 
 			:year, 
@@ -23,11 +24,13 @@ module Tlarb
 		end
 
 		def reset
-			self.time_zone = 'Tokyo'
-			self.year      = ''
-			self.month     = ''
-			self.day       = ''
-			self.movie_id  = ''
+			self.environment  = ''
+			self.access_token = ''
+			self.time_zone    = 'Tokyo'
+			self.year         = ''
+			self.month        = ''
+			self.day          = ''
+			self.movie_id     = ''
 			self
 		end
 	end

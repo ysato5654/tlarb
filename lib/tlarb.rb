@@ -14,10 +14,21 @@ module Tlarb
 
 	ROOT_PATH = File.expand_path(File.dirname(__FILE__) + '/..')
 
+	ENVIRONMENT = ['development', 'production']
+
 	class << self
-		def initialize arg
+		def initialize env, id
 			Tlarb.reset
+			TwicasStream.reset
+
+			unless ENVIRONMENT.include?(env)
+				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: out of limitation. support environment is '#{ENVIRONMENT.join("' or '")}'."
+
+				return false
+			end
+
 			Tlarb.configure do |config|
+				config.environment = env
 				config.access_token = ROOT_PATH + '/config/access_token.txt'
 				config.time_zone = 'Tokyo'
 
@@ -28,22 +39,35 @@ module Tlarb
 				config.month = time.month
 				config.day = time.day
 
-				TwicasStream.reset
 				TwicasStream.configure do |request_header|
 					request_header.access_token = File.read(config.access_token)
 				end
 			end
 
-			if arg.keys == [:user_id]
-				user_id = arg[:user_id]
-				api = TwicasStream::User::GetUserInfo.new(user_id)
+			case id.keys
+			when [:user_id]
+				api = TwicasStream::User::GetUserInfo.new(id[:user_id])
+
+				unless api.response[:error].nil?
+					Tlarb.reset
+					TwicasStream.reset
+
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:code]} - #{api.response[:error][:message]}"
+
+					return false
+				end
 
 				movie_id = api.response[:user][:last_movie_id]
 
-			elsif arg.keys == [:movie_id]
-				movie_id = arg[:movie_id]
+			when [:movie_id]
+				movie_id = id[:movie_id]
 
 			else
+				Tlarb.reset
+				TwicasStream.reset
+
+				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: argument is not 'user_id' or 'movie_id'."
+
 				return false
 			end
 
