@@ -3,7 +3,7 @@
 
 module Tlarb
 	module Model
-		yaml = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../../config/database.yml'))
+		yaml = YAML.load_file(ROOT_PATH + '/config/database.yml')
 
 		database = yaml['development']['database']
 
@@ -17,8 +17,8 @@ module Tlarb
 		FileUtils.mkdir_p(ROOT_PATH + '/' + File.dirname(database))
 
 		CONN = {
-					adapter: yaml['development']['adapter'], 
-					database: ROOT_PATH + '/' + database
+			adapter: yaml['development']['adapter'], 
+			database: ROOT_PATH + '/' + database
 		}
 
 		require File.expand_path(File.dirname(__FILE__) + '/models/movie_info')
