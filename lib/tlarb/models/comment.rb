@@ -4,14 +4,7 @@
 module Tlarb
 	module Model
 		class Comment < ActiveRecord::Base
-			yaml = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../../../config/database.yml'))
-
-			conn = {
-						adapter: yaml['development']['adapter'], 
-						database: File.expand_path(File.dirname(__FILE__) + '/../../../' + yaml['development']['database'])
-					}
-
-			establish_connection(conn)
+			establish_connection(CONN)
 
 			connection.create_table(:comments, force: true) do |t|
 				t.string  :comment_id, :null => false

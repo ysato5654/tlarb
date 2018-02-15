@@ -4,14 +4,7 @@
 module Tlarb
 	module Model
 		class User < ActiveRecord::Base
-			yaml = YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/../../../config/database.yml'))
-
-			conn = {
-						adapter: yaml['development']['adapter'], 
-						database: File.expand_path(File.dirname(__FILE__) + '/../../../' + yaml['development']['database'])
-					}
-
-			establish_connection(conn)
+			establish_connection(CONN)
 
 			connection.create_table(:users, force: true) do |t|
 				t.string  :user_id, :null => false
