@@ -4,14 +4,13 @@
 module Tlarb
 	class Live
 
-		SPACE_NUM = 49
-		INDENT = "\s" + SPACE_NUM
+		INDENT = "\s" + 49
 
 		def initialize
 			require File.expand_path(File.dirname(__FILE__) + '/model')
 
 			#logdev = STDOUT
-			logdev = ROOT_PATH + '/log/log_file' + Time.current.strftime('%Y%m%d_%H%M%S') + '.log'
+			logdev = ROOT_PATH + '/log/log_file_' + Time.current.strftime('%Y%m%d_%H%M%S') + '.log'
 
 			FileUtils.mkdir_p(File.dirname(logdev)) if logdev.is_a?(String)
 
