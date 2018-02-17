@@ -21,6 +21,7 @@ module Tlarb
 				loop_num += 1
 
 				@logger.info { "#{loop_num}" }
+				STDOUT.print '.'
 
 				# 1. check live status
 				status = is_live?(movie_id)
@@ -41,6 +42,8 @@ module Tlarb
 			end
 
 			@logger.close
+
+			STDOUT.puts
 		end
 
 		private
