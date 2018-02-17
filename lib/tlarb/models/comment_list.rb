@@ -6,12 +6,14 @@ module Tlarb
 		class CommentList < ActiveRecord::Base
 			establish_connection(CONN)
 
-			connection.create_table(:comment_lists, force: true) do |t|
-				t.string  :movie_id, :null => false
-				t.integer :all_count, :null => false
-				t.integer :comments_db_id, :null => false
+			unless connection.table_exists?('comment_lists')
+				connection.create_table(:comment_lists, force: true) do |t|
+					t.string  :movie_id, :null => false
+					t.integer :all_count, :null => false
+					t.integer :comments_db_id, :null => false
 
-				t.timestamps
+					t.timestamps
+				end
 			end
 		end
 	end

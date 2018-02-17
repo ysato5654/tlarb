@@ -8,12 +8,14 @@ module Tlarb
 
 			self.table_name = 'movie_info'
 
-			connection.create_table(:movie_info, force: true) do |t|
-				t.integer :movies_db_id, :null => false
-				t.integer :broadcasters_db_id, :null => false
-				t.string  :tags, :null => false
+			unless connection.table_exists?('movie_info')
+				connection.create_table(:movie_info, force: true) do |t|
+					t.integer :movies_db_id, :null => false
+					t.integer :broadcasters_db_id, :null => false
+					t.string  :tags, :null => false
 
-				t.timestamps
+					t.timestamps
+				end
 			end
 		end
 	end
