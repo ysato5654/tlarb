@@ -5,8 +5,10 @@ require 'active_record'
 require 'twicas_stream'
 require 'yaml'
 require 'fileutils'
+require 'logger'
 
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/configure')
+require File.expand_path(File.dirname(__FILE__) + '/tlarb/stream')
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/version')
 
 module Tlarb
@@ -75,7 +77,29 @@ module Tlarb
 				config.movie_id = movie_id
 			end
 
-			require File.expand_path(File.dirname(__FILE__) + '/tlarb/live')
+			# final check before creating data base
+			api = TwicasStream::Movie::GetMovieInfo.new(movie_id)
+			status = api.response[:movie][:is_live]
+
+			if status.nil?
+					Tlarb.reset
+					TwicasStream.reset
+
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:code]} - #{api.response[:error][:message]}"
+
+					return false
+			end
+
+			unless status
+				Tlarb.reset
+				TwicasStream.reset
+
+				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: Live is offline"
+
+				return false
+			end
+
+			return true
 		end
 	end
 end
