@@ -34,39 +34,60 @@ class LiveStream
 			@movie_id = ''
 		end
 	end
+
+	def get_movie_id_by_user_id user_id
+		movie_id = ''
+
+		# initialize because of setting access token
+		Tlarb.initialize('', '')
+
+		api = TwicasStream::User::GetUserInfo.new(user_id)
+
+		unless api.response[:error].nil?
+			STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:code]} - #{api.response[:error][:message]}"
+
+			Tlarb.reset
+			TwicasStream.reset
+		else
+			movie_id = api.response[:user][:last_movie_id]
+		end
+
+		movie_id
+	end
+
+	def run
+	end
 end
 
 if $0 == __FILE__
-	live_stream = LiveStream.new
+	live = LiveStream.new
 
-	env = live_stream.environment
+	env = live.environment
 
 	if env.empty?
 		STDERR.puts "#{__FILE__}:#{__LINE__}:Error: option error. usage is 'ruby #{File.basename(__FILE__)} --help'"
 		exit(0)
 	end
 
-	if !live_stream.user_id.empty?
-		id = {:user_id => live_stream.user_id}
-	elsif !live_stream.movie_id.empty?
-		id = {:movie_id => live_stream.movie_id}
+	movie_id = ''
+
+	if !live.user_id.empty?
+		movie_id = live.get_movie_id_by_user_id(live.user_id)
+
+		exit(0) if movie_id.empty?
+
+	elsif !live.movie_id.empty?
+		movie_id = live.movie_id
+
 	else
 		STDERR.puts "#{__FILE__}:#{__LINE__}:Error: option error. usage is 'ruby #{File.basename(__FILE__)} --help'"
 		exit(0)
 	end
 
 	# initialize
-	unless Tlarb.initialize(env, id)
-		exit(0)
-	end
-
-	movie_id = ''
-	Tlarb.configure do |config|
-		movie_id = config.movie_id
-	end
+	Tlarb.initialize(env, movie_id)
 
 	STDOUT.puts
-	STDOUT.puts "user id : #{id[:user_id]}"
 	STDOUT.puts "movie id: #{movie_id}"
 	STDOUT.puts
 
