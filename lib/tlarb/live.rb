@@ -4,7 +4,7 @@
 module Tlarb
 	class Live
 
-		INDENT = "\s" + 49
+		INDENT = "\s" * 49
 
 		def initialize
 			require File.expand_path(File.dirname(__FILE__) + '/model')
