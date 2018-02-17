@@ -19,15 +19,9 @@ module Tlarb
 	ENVIRONMENT = ['development', 'production']
 
 	class << self
-		def initialize env, id
+		def initialize env, movie_id
 			Tlarb.reset
 			TwicasStream.reset
-
-			unless ENVIRONMENT.include?(env)
-				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: out of limitation. support environment is '#{ENVIRONMENT.join("' or '")}'."
-
-				return false
-			end
 
 			Tlarb.configure do |config|
 				config.environment = env
@@ -41,65 +35,12 @@ module Tlarb
 				config.month = time.month
 				config.day = time.day
 
+				config.movie_id = movie_id
+
 				TwicasStream.configure do |request_header|
 					request_header.access_token = File.read(config.access_token)
 				end
 			end
-
-			case id.keys
-			when [:user_id]
-				api = TwicasStream::User::GetUserInfo.new(id[:user_id])
-
-				unless api.response[:error].nil?
-					Tlarb.reset
-					TwicasStream.reset
-
-					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:code]} - #{api.response[:error][:message]}"
-
-					return false
-				end
-
-				movie_id = api.response[:user][:last_movie_id]
-
-			when [:movie_id]
-				movie_id = id[:movie_id]
-
-			else
-				Tlarb.reset
-				TwicasStream.reset
-
-				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: argument is not 'user_id' or 'movie_id'."
-
-				return false
-			end
-
-			Tlarb.configure do |config|
-				config.movie_id = movie_id
-			end
-
-			# final check before creating data base
-			api = TwicasStream::Movie::GetMovieInfo.new(movie_id)
-			status = api.response[:movie][:is_live]
-
-			if status.nil?
-					Tlarb.reset
-					TwicasStream.reset
-
-					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:code]} - #{api.response[:error][:message]}"
-
-					return false
-			end
-
-			unless status
-				Tlarb.reset
-				TwicasStream.reset
-
-				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: Live is offline"
-
-				return false
-			end
-
-			return true
 		end
 	end
 end
