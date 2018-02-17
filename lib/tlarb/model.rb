@@ -5,7 +5,12 @@ module Tlarb
 	module Model
 		yaml = YAML.load_file(ROOT_PATH + '/config/database.yml')
 
-		database = yaml['development']['database']
+		environment = ''
+		Tlarb.configure do |config|
+			environment = config.environment
+		end
+
+		database = yaml[environment]['database']
 
 		Tlarb.configure do |config|
 			database.gsub!(/year/, config.year.to_s)
@@ -17,7 +22,7 @@ module Tlarb
 		FileUtils.mkdir_p(ROOT_PATH + '/' + File.dirname(database))
 
 		CONN = {
-			adapter: yaml['development']['adapter'], 
+			adapter: yaml[environment]['adapter'], 
 			database: ROOT_PATH + '/' + database
 		}
 
