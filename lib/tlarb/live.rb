@@ -3,7 +3,6 @@
 
 module Tlarb
 	class Live
-
 		INDENT = "\s" * 49
 
 		def initialize
