@@ -14,8 +14,8 @@ module Tlarb
 
 		Tlarb.configure do |config|
 			database.gsub!(/year/, config.year.to_s)
-			database.gsub!(/month/, config.month.to_s)
-			database.gsub!(/day/, config.day.to_s)
+			database.gsub!(/month/, config.month.to_s.rjust(2, '0'))
+			database.gsub!(/day/, config.day.to_s.rjust(2, '0'))
 			database.gsub!(/movie_id/, config.movie_id)
 		end
 
