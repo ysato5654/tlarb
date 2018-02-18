@@ -53,8 +53,13 @@ module Tlarb
 
 			# 2. response is error, then break
 			if api.response.is_error?
-				@logger.error { "#{api.response}" }
-				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response}"
+				if api.response[:error][:details].nil?
+					@logger.error { "#{api.response[:error][:message]} (code: #{api.response[:error][:code]})" }
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:message]} (code: #{api.response[:error][:code]})"
+				else
+					@logger.error { "#{api.response[:error][:message]} (code: #{api.response[:error][:code]}) - #{api.response[:error][:details]}" }
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:message]} (code: #{api.response[:error][:code]}) - #{api.response[:error][:details]}"
+				end
 				return nil
 			end
 
@@ -87,8 +92,13 @@ module Tlarb
 
 			# 2. response is error, then break
 			if api.response.is_error?
-				@logger.error { "#{api.response}" }
-				STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response}"
+				if api.response[:error][:details].nil?
+					@logger.error { "#{api.response[:error][:message]} (code: #{api.response[:error][:code]})" }
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:message]} (code: #{api.response[:error][:code]})"
+				else
+					@logger.error { "#{api.response[:error][:message]} (code: #{api.response[:error][:code]}) - #{api.response[:error][:details]}" }
+					STDERR.puts "#{__FILE__}:#{__LINE__}:Error: #{api.response[:error][:message]} (code: #{api.response[:error][:code]}) - #{api.response[:error][:details]}"
+				end
 				return nil
 			end
 
