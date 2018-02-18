@@ -82,7 +82,7 @@ module Tlarb
 		end
 	end
 
-	class Stream < Live
+	class Stream
 	end
 end
 ```
@@ -100,7 +100,6 @@ end
 ├─	/db									  
 ├─	/lib								  
 │	├─	/tlarb							  
-│	│	├─	live.rb						  
 │	│	├─	stream.rb					  
 │	│	├─	models						  
 │	│	│	├─	movie_info.rb			  

@@ -1,3 +1,11 @@
+## v0.3.2
+[full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.1...v0.3.2)
+
+* Change specification for creation database directory
+	- 2 -> 02
+* Remove 'Live' class
+	- merge 'Live' class with 'Stream' class
+
 ## v0.3.1
 [full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.0...v0.3.1)
 
