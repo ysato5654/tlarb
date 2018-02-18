@@ -1,15 +1,51 @@
 #! /opt/local/bin/ruby
 # coding: utf-8
 
-require File.expand_path(File.dirname(__FILE__) + '/live')
-
 module Tlarb
-	class Stream < Live
+	class Stream
 		DEFAULT_INTERVAL = 5#unit:second
 
 		DEFAULT_OFFSET   = TwicasStream::Comment::GetComments::DEFAULT_OFFSET
 		DEFAULT_LIMIT    = 20#TwicasStream::Comment::GetComments::DEFAULT_LIMIT
 		DEFAULT_SLICE_ID = TwicasStream::Comment::GetComments::DEFAULT_SLICE_ID
+
+		INDENT = "\s" * 49
+
+		def initialize
+			require File.expand_path(File.dirname(__FILE__) + '/model')
+
+			logdev = ROOT_PATH + '/log'
+
+			FileUtils.mkdir_p(logdev)
+
+			logdev += '/log_file_' + Time.current.strftime('%Y%m%d_%H%M%S') + '.log'
+
+			@logger = Logger.new(
+				logdev,
+				level = Logger::Severity::DEBUG,
+				datetime_format = nil
+				# => '%Y-%m-%dT%H:%M:%S.%06d '
+			)
+
+			@logger.datetime_format = '%Y-%m-%d %H:%M:%S %z '
+
+			@logger.debug { "logger library version = #{Logger::VERSION}" }
+
+			Tlarb.configure do |config|
+				@logger.debug {
+					"configure" + "\n" +
+					INDENT + "environment = #{config.environment}" + "\n" +
+					INDENT + "access_token = #{config.access_token}" + "\n" +
+					INDENT + "time_zone = #{config.time_zone}" + "\n" +
+					INDENT + "year = #{config.year}" + "\n" +
+					INDENT + "month = #{config.month}" + "\n" +
+					INDENT + "day = #{config.day}" + "\n" +
+					INDENT + "movie_id = #{config.movie_id}" + "\n" +
+					INDENT + "adapter = #{Model::CONN[:adapter]}" + "\n" +
+					INDENT + "database = #{Model::CONN[:database]}"
+				}
+			end
+		end
 
 		def run movie_id, offset = DEFAULT_OFFSET, limit = DEFAULT_LIMIT, slice_id = DEFAULT_SLICE_ID
 			@logger.debug { "interval time = #{DEFAULT_INTERVAL} (s)" }
