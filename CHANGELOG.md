@@ -1,3 +1,8 @@
+## v0.3.1
+[full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.0...v0.3.1)
+
+* Change error message
+
 ## v0.3.0
 [full changelog](http://github.com/ysato5654/tlarb/compare/v0.2.0...v0.3.0)
 
