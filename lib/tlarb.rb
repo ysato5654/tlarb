@@ -10,6 +10,7 @@ require 'logger'
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/configure')
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/analytics')
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/stream')
+require File.expand_path(File.dirname(__FILE__) + '/tlarb/view')
 require File.expand_path(File.dirname(__FILE__) + '/tlarb/version')
 
 module Tlarb
