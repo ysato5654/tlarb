@@ -1,3 +1,16 @@
+## v0.4.0
+[full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.2...v0.4.0)
+
+* Support timer
+* Add 'Analytics' App
+	- Active comment count
+	- Active user count
+	- Total comment count
+	- Max viewer count
+	- Total viewer count
+	- User comment rank
+* Add ‘View’ class
+
 ## v0.3.2
 [full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.1...v0.3.2)
 
