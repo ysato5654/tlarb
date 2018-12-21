@@ -9,7 +9,7 @@
 	- Max viewer count
 	- Total viewer count
 	- User comment rank
-* Add ‘View’ class
+* Add 'View' class
 
 ## v0.3.2
 [full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.1...v0.3.2)
