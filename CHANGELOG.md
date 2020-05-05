@@ -1,7 +1,11 @@
+## v0.4.1
+[full changelog](http://github.com/ysato5654/tlarb/compare/v0.4.0...v0.4.1)
+
+* Use timer wait instead of sleep
+
 ## v0.4.0
 [full changelog](http://github.com/ysato5654/tlarb/compare/v0.3.2...v0.4.0)
 
-* Support timer
 * Add 'Analytics' App
 	- Active comment count
 	- Active user count

@@ -2,5 +2,5 @@
 # coding: utf-8
 
 module Tlarb
-	VERSION = '0.4.0'
+	VERSION = '0.4.1'
 end
