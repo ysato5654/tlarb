@@ -1,6 +1,8 @@
 #! /opt/local/bin/ruby
 # coding: utf-8
 
+require 'timers'
+
 module Tlarb
 	class Stream
 		DEFAULT_INTERVAL = 5#unit:second
@@ -48,16 +50,19 @@ module Tlarb
 		end
 
 		def run movie_id, offset = DEFAULT_OFFSET, limit = DEFAULT_LIMIT, slice_id = DEFAULT_SLICE_ID
+			timers = Timers::Group.new
+
 			@logger.debug { "interval time = #{DEFAULT_INTERVAL} (s)" }
 
 			@logger.info { "movie id = #{movie_id}" }
+
+			paused_timer = timers.every(DEFAULT_INTERVAL) { STDOUT.print '.' }
 
 			loop_num = 0
 			loop do
 				loop_num += 1
 
 				@logger.info { "#{loop_num}" }
-				STDOUT.print '.'
 
 				# 1. check live status
 				status = is_live?(movie_id)
@@ -72,10 +77,12 @@ module Tlarb
 				get_comment(movie_id = movie_id, offset = offset, limit = limit, slice_id = slice_id)
 
 				# 3. wait interval time
-				sleep(DEFAULT_INTERVAL)
+				timers.wait
 
 				# 4. repeat 1 ~ 3 until end of live
 			end
+
+			paused_timer.cancel
 
 			@logger.close
 
